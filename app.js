@@ -1,79 +1,54 @@
+//Dependencies
+var jsdom = require('jsdom'),
+    nodemailer = require('nodemailer');
 
-/**
- * Module dependencies.
- */
+//Create dom environment based on SEAO url
+jsdom.env({
+  html: 'https://seao.ca/Recherche/avis_selectionnes_jour.aspx?SubCategoryCode=S4&ColumnAction=1&callingPage=4&CatChoosen=1&NbResult=100',
+  scripts: ['http://code.jquery.com/jquery-1.7.2.min.js'],
+  done: function(errors, window) {
+    var $ = window.jQuery,
+        $offers = $("td.contenu table table[id=''] tr[id='']"),
+        mailContent = '<ul>';
 
-var express = require('express')
-  , jsdom = require('jsdom')
-  , request = require('request')
-  , url = require('url')
-  , routes = require('./routes');
+    //Loop on offers to extract that precious data
+    $offers.each(function(i, item) {
+      var $td = $(item).find('td').eq(1),
+          name = $td.find('span.titreAvis').text().trim(),
+          link = $td.find('a')[0].href,
+          annoncer = $td.find('b').text().trim();
 
-var app = module.exports = express.createServer();
+      //Skip to next offer if it doesn't match criterias
+      if(!filterOffer(name)) return true
 
-// Configuration
+      mailContent += '<li>' + annoncer + ' - <a href="' + link + '">' + name + '</a></li>';
+    });
 
-app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+    mailContent += "</ul>";
+
+    //Send tha mail
+    sendMail({
+      from: "leo.renaud@hooktstudios.com",
+      to: "leo.renaud@hooktstudios.com",
+      subject: "Hookt Studios' SEAO Daily Scrape",
+      text: "Y U NO HTML?",
+      html: mailContent
+    });
+  }
 });
 
-app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
+function sendMail(options) {
+  var smtpTransport = nodemailer.createTransport("Sendmail", "/usr/sbin/sendmail");
 
-app.configure('production', function(){
-  app.use(express.errorHandler());
-});
-
-// Routes
-app.get('/', function(req, res){
-  var self = this;
-  self.items = [];
-
-  jsdom.env({
-    html: 'https://seao.ca/Recherche/avis_selectionnes_jour.aspx?SubCategoryCode=S4&callingPage=4&CatChoosen=1&NbResult=100',
-    scripts: ['http://code.jquery.com/jquery-1.7.2.min.js'],
-    done: function(errors, window) {
-      var $ = window.jQuery,
-          $body = $('body'),
-          $offers = $("td.contenu table table[id=''] tr[id='']");
-
-
-      $offers.each(function(i, item) {
-        var $td = $(item).find('td').eq(1),
-            name = $td.find('span.titreAvis').text().trim(),
-            link = $td.find('a')[0].href,
-            annoncer = $td.find('b');
-
-        if(!filterOffer(name)) return true
-
-        self.items.push({
-          title: name,
-          url: link,
-          client: annoncer
-        });
-      });
-
-      res.render('index', {
-        title: $('title').text(),
-        offers: self.items
-      });
-    }
+  smtpTransport.sendMail(options, function(error, response){
+      if(error) console.log(error);
+      else console.log("Message sent: " + response.message);
+      smtpTransport.close(); // shut down the connection pool, no more messages
   });
-});
-
-function filterOffer(title) {
-  var valid = true;
-
-  if(title.indexOf('Téléphonie') != -1) valid = false;
-
-  return valid
 }
 
-app.listen(3000);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+function filterOffer(title) {
+  return (title.indexOf('Téléphonie') != -1) ? false : true;
+}
+
+console.log('Running!')

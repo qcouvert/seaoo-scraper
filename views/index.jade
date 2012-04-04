@@ -1,9 +1,0 @@
-h1= title
-- if (offers.length)
-  p Il y a #{offers.length} offres.
-  ul
-    - offers.forEach(function(item){
-      li:  a(href=item['url'])= item['title']
-    - })
-- else
-  p Pas d'offres, sorry bro.
