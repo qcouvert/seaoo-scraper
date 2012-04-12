@@ -3,7 +3,7 @@ var jsdom = require('jsdom'),
     nodemailer = require('nodemailer'),
     sqlite3 = require('sqlite3').verbose(),
     crypto = require('crypto'),
-    seao = require('seao'),
+    seao = require('./seao.js'),
     dataset = new seao.Dataset(),
     db;
 
@@ -64,8 +64,8 @@ function extractSeaoData() {
 
 function sendMail() {
   var options = {
-    from: "jimmy.bourassa@hooktstudios.com",
-    to: "jimmy.bourassa@hooktstudios.com",
+    from: "admin@hooktstudios.com",
+    to: "info@hooktstudios.com",
     subject: "Hookt Studios' SEAO Scrape",
     text: dataset.asText(),
     html: dataset.asHtml()
