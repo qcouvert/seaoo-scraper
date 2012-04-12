@@ -1,39 +1,75 @@
 //Dependencies
 var jsdom = require('jsdom'),
-    nodemailer = require('nodemailer');
+    nodemailer = require('nodemailer'),
+    sqlite3 = require('sqlite3').verbose(),
+    crypto = require('crypto'),
+    seao = require('seao'),
+    dataset = new seao.Dataset(),
+    db;
+
+
+function main() {
+  createDb();
+}
+
+function createDb() {
+  db = new sqlite3.Database('cache.sqlite3', createTable);
+}
+
+function createTable() {
+  db.run("CREATE TABLE IF NOT EXISTS scrapes (" +
+         "hash varchar(40) PRIMARY KEY, " +
+         "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)", extractSeaoData);
+
+}
 
 //Create dom environment based on SEAO url
-jsdom.env({
-  html: 'https://seao.ca/Recherche/avis_selectionnes_jour.aspx?SubCategoryCode=S4&ColumnAction=1&callingPage=4&CatChoosen=1&NbResult=100',
-  scripts: ['http://code.jquery.com/jquery-1.7.2.min.js'],
-  done: function(errors, window) {
-    var $ = window.jQuery,
-        $offers = $("td.contenu table table[id=''] tr[id='']"),
-        dataset = new SEAODataset();
+function extractSeaoData() {
+  jsdom.env({
+    html: 'https://seao.ca/Recherche/avis_selectionnes_jour.aspx?SubCategoryCode=S4&ColumnAction=1&callingPage=4&CatChoosen=1&NbResult=100',
+    scripts: ['http://code.jquery.com/jquery-1.7.2.min.js'],
+    done: function(errors, window) {
+      var $ = window.jQuery,
+          $offers = $("td.contenu table table[id=''] tr[id='']"),
+          offers_length = $offers.length,
+          processed_length = 0;
 
-    //Loop on offers to extract that precious data
-    $offers.each(function(i, item) {
-      var $td = $(item).find('td').eq(1),
-          name = $td.find('span.titreAvis').text().trim(),
-          link = $td.find('a')[0].href,
-          annoncer = $td.find('b').text().trim();
-      dataset.add(annoncer, name, link);
-    });
+      db.serialize()
 
-    console.log(dataset.asText());
+      //Loop on offers to extract that precious data
+      $offers.each(function(i, item) {
 
-    //Send tha mail
-    sendMail({
-      from: "jimmy.bourassa@hooktstudios.com",
-      to: "jimmy.bourassa@hooktstudios.com",
-      subject: "Hookt Studios' SEAO Daily Scrape",
-      text: dataset.asText(),
-      html: dataset.asHtml()
-    });
+        var $td = $(item).find('td').eq(1),
+            name = $td.find('span.titreAvis').text().trim(),
+            link = $td.find('a')[0].href,
+            annoncer = $td.find('b').text().trim();
+            hash = crypto.createHash('sha1').update(link).digest('hex');
+
+        db.get('SELECT 1 FROM scrapes WHERE hash = ?', [hash], function(err, result) {
+          if(!result) {
+            db.run('INSERT INTO scrapes (hash) VALUES (?)', [hash]);
+            dataset.add(annoncer, name, link);
+          }
+          if(++processed_length == offers_length) {
+            db.close();
+            if(dataset.hasData()) sendMail();
+          }
+        });
+
+      });
+
+    }
+  });
+}
+
+function sendMail() {
+  var options = {
+    from: "jimmy.bourassa@hooktstudios.com",
+    to: "jimmy.bourassa@hooktstudios.com",
+    subject: "Hookt Studios' SEAO Scrape",
+    text: dataset.asText(),
+    html: dataset.asHtml()
   }
-});
-
-function sendMail(options) {
   var smtpTransport = nodemailer.createTransport("Sendmail", "/usr/sbin/sendmail");
 
   smtpTransport.sendMail(options, function(error, response){
@@ -43,32 +79,7 @@ function sendMail(options) {
   });
 }
 
-function SEAODataset() {
-  this.data = [];
-}
 
-SEAODataset.prototype = {
-  add: function(annoncer, name, url) {
-    if(!this._skip(name)) {
-      this.data.push({ annoncer: annoncer, name: name, url: url});
-    }
-  },
-  asText: function() {
-    return this.data.map(function(item) {
-      return item.annoncer + ' - ' + item.name + '\n' + item.url;
-    }).join('\n\n');
-  },
-  asHtml: function() {
-    var list = this.data.map(function(item) {
-      return '<li>' + itemannoncer + ' - <a href="' + link + '">' + name + '</a></li>';
-    }).join('\n');
-
-    return '<ul>\n' + list + '</ul>';
-  },
-  _skip: function(name) {
-    return (name.indexOf('Téléphonie') == -1) ? false : true;
-  }
-}
-
+main();
 
 console.log('Running!')
