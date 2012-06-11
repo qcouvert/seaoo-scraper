@@ -42,17 +42,19 @@ function extractSeaoData() {
         var $td = $(item).find('td').eq(1),
             name = $td.find('span.titreAvis').text().trim(),
             link = $td.find('a')[0].href,
-            annoncer = $td.find('b').text().trim();
+            annoncer = $td.find('b').text().trim(),
             hash = crypto.createHash('sha1').update(link).digest('hex');
 
         db.get('SELECT 1 FROM scrapes WHERE hash = ?', [hash], function(err, result) {
+          console.log(link);
+          console.log(hash);
           if(!result) {
             db.run('INSERT INTO scrapes (hash) VALUES (?)', [hash]);
             dataset.add(annoncer, name, link);
           }
           if(++processed_length == offers_length) {
             db.close();
-            if(dataset.hasData()) sendMail();
+            // if(dataset.hasData()) sendMail();
           }
         });
 
@@ -70,13 +72,14 @@ function sendMail() {
     text: dataset.asText(),
     html: dataset.asHtml()
   }
+  console.log(dataset);
   var smtpTransport = nodemailer.createTransport("Sendmail", "/usr/sbin/sendmail");
 
-  smtpTransport.sendMail(options, function(error, response){
-      if(error) console.log(error);
-      else console.log("Message sent: " + response.message);
-      smtpTransport.close(); // shut down the connection pool, no more messages
-  });
+  //smtpTransport.sendMail(options, function(error, response){
+      //if(error) console.log(error);
+      //else console.log("Message sent: " + response.message);
+      //smtpTransport.close(); // shut down the connection pool, no more messages
+  //});
 }
 
 
