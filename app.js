@@ -46,15 +46,13 @@ function extractSeaoData() {
             hash = crypto.createHash('sha1').update(link).digest('hex');
 
         db.get('SELECT 1 FROM scrapes WHERE hash = ?', [hash], function(err, result) {
-          console.log(link);
-          console.log(hash);
           if(!result) {
             db.run('INSERT INTO scrapes (hash) VALUES (?)', [hash]);
             dataset.add(annoncer, name, link);
           }
           if(++processed_length == offers_length) {
             db.close();
-            // if(dataset.hasData()) sendMail();
+            if(dataset.hasData()) sendMail();
           }
         });
 
