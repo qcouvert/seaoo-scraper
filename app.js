@@ -73,11 +73,11 @@ function sendMail() {
   console.log(dataset);
   var smtpTransport = nodemailer.createTransport("Sendmail", "/usr/sbin/sendmail");
 
-  //smtpTransport.sendMail(options, function(error, response){
-      //if(error) console.log(error);
-      //else console.log("Message sent: " + response.message);
-      //smtpTransport.close(); // shut down the connection pool, no more messages
-  //});
+  smtpTransport.sendMail(options, function(error, response){
+      if(error) console.log(error);
+      else console.log("Message sent: " + response.message);
+      smtpTransport.close(); // shut down the connection pool, no more messages
+  });
 }
 
 
