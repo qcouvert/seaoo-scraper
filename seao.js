@@ -15,7 +15,7 @@ Dataset.prototype = {
   },
   asHtml: function() {
     var list = this.data.map(function(item) {
-      return '<li>' + item.annoncer + ' - <a href="' + item.link + '">' + item.name + '</a></li>';
+      return '<li>' + item.annoncer + ' - <a href="' + item.url + '">' + item.name + '</a></li>';
     }).join('\n');
 
     return '<ul>\n' + list + '</ul>';

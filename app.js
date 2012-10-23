@@ -30,7 +30,7 @@ function extractSeaoData() {
     scripts: ['http://code.jquery.com/jquery-1.7.2.min.js'],
     done: function(errors, window) {
       var $ = window.jQuery,
-          $offers = $("td.contenu table table[id=''] tr[id='']"),
+          $offers = $("span.titreAvis"),
           offers_length = $offers.length,
           processed_length = 0;
 
@@ -39,8 +39,8 @@ function extractSeaoData() {
       //Loop on offers to extract that precious data
       $offers.each(function(i, item) {
 
-        var $td = $(item).find('td').eq(1),
-            name = $td.find('span.titreAvis').text().trim(),
+        var $td = $(item).parents('td:first'),
+            name = $(item).text().trim(),
             link = $td.find('a')[0].href,
             annoncer = $td.find('b').text().trim(),
             hash = crypto.createHash('sha1').update(link).digest('hex');
