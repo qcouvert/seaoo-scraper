@@ -1,14 +1,15 @@
 {
-    "name": "seao-scraper"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "jsdom": "0.2.13"
-    , "nodemailer": "0.3.14"
-    , "sqlite3": "2.1.1"
-  }
-  , "engines": {
-      "node": "0.8.x"
-    , "npm": "1.1.x"
+  "name": "seao-scraper",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "jsdom": "0.2.13",
+    "nodemailer": "0.3.14",
+    "sqlite3": "2.1.1",
+    "redis": "0.8.2"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
   }
 }
