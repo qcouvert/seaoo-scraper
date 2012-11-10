@@ -6,7 +6,8 @@
     "jsdom": "0.2.13",
     "nodemailer": "0.3.14",
     "sqlite3": "2.1.1",
-    "redis": "0.8.2"
+    "redis": "0.8.2",
+    "nohm": "~0.9.1"
   },
   "engines": {
     "node": "0.8.x",
