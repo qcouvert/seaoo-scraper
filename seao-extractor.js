@@ -4,6 +4,12 @@ var util = require('util'),
 
 var jquery = fs.readFileSync("./jquery-1.7.2.min.js").toString();
 
+
+/*
+ * Regular expression that matches all blank spaces. Used for cleaning up HTML.
+ */
+var reg_space = /[\s\n\r\t ]+/g;
+
 function getNotice(itemId, callback) {
   var cachePath = "./" + itemId + ".html",
     noticeUrl = 'https://seao.ca/OpportunityPublication/avisconsultes.aspx?ItemId=' + itemId;
@@ -12,6 +18,7 @@ function getNotice(itemId, callback) {
     src: [jquery],
     done: function(errors, window) {
       var notice = {
+        url: noticeUrl,
         itemId: itemId
       };
       if (errors) {
@@ -22,26 +29,25 @@ function getNotice(itemId, callback) {
         $('*[id^="OpportunityIdentifier1_lbl"]').each(function() {
           var id = this.id.substring("OpportunityIdentifier1_lbl".length);
           if (id.substring(id.length - 4) === 'Info') {
-            notice[id.substring(0, id.length - 4)] = $(this).text();
+            notice[id.substring(0, id.length - 4)] = $(this).html().replace(reg_space, ' ').trim();
           };
         });
         notice.information = {};
         $('#MainUserControl_lbBlockInformation').parents('h2').next().find('td.item *[id]').each(function() {
           var id = this.id.replace(/(^MainUserControl_lbl?)|(TextValue$)/, '');
-          notice.information[id] = $(this).text();
+          notice.information[id] = $(this).html().replace(reg_space, ' ').trim();
         });
 
         var buyerInfoTable = $('#MainUserControl_lbBlockInformation_buyers').parents('h2').next();
         notice.buyer = {
-          coordinator: $('#MainUserControl_coordinatorsRows td.item', buyerInfoTable).html(),
+          coordinator: $('#MainUserControl_coordinatorsRows td.item', buyerInfoTable).html().replace(reg_space, ' '),
           website: $('a[href^="http"]:first', buyerInfoTable).attr('href') || null,
-          email: $('a[href^="mailto"]:first', buyerInfoTable).text() || null
         };
 
         buyerInfoTable.find('td.item span[id]').each(function() {
           if (this.id) {
             var id = this.id.replace(/(^MainUserControl_lbl?)|(Textvalue$)/, '');
-            notice.buyer[id] = $(this).text();
+            notice.buyer[id] = $(this).html().trim();
           }
         });
         var unspscTable = $('#MainUserControl_dgUNSPSC');
@@ -85,6 +91,7 @@ exports.getNotice = getNotice;
 
 // 7a94703d-8e78-46e7-924a-ea65ae52ea7c
 // 26644a9c-e575-41fe-9487-c021e91e74b1
-getNotice('26644a9c-e575-41fe-9487-c021e91e74b1', function(error, notice) {
+// 98558b11-b359-459d-a275-8958cfcdcd6d
+getNotice('98558b11-b359-459d-a275-8958cfcdcd6d', function(error, notice) {
   console.log(util.inspect(notice || error, true, null, true));
 });
