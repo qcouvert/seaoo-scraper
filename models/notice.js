@@ -13,6 +13,7 @@ var Notice = module.exports = new Schema({
     information: {
         PublicationDate: String
     },
+    category: {type:String, index:true},
     creation: {type:Date, default:Date.now},
     update: Date,
     tags: [String]
