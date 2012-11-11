@@ -18,7 +18,7 @@ A minimalist read-only REST API for SEAO data.
 
 Being a read-only API, the server only support GET request.
 
-### Search for notice by category
+#### Search for notice by number (with support for buyer name and type)
 
 Example:
 
@@ -44,7 +44,7 @@ Example:
 }
 ```
 
-### Search for notice by number (with support for buyer and buyer type)
+#### Search for notice by category
 
 Example:
 
