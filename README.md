@@ -26,7 +26,7 @@ Example:
 
 ```json
 {
-    "total": "5",
+    "total": 5,
     "notices": [
         {
             "url": "https://seao.ca/OpportunityPublication/avisconsultes.aspx?ItemId=bde3ec09-e3d2-457f-9f9a-e8755a99ab6f",
