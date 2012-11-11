@@ -10,16 +10,17 @@ var Notice = module.exports = new Schema({
     url: String,
     Title: String,
     Status: String,
+    description: String,
     information: {
         PublicationDate: String
     },
-    category: {type:String, index:true},
+    categories: [String],
     creation: {type:Date, default:Date.now},
     update: Date,
     tags: [String]
 });
 
-Notice.index({tags: 1});
+Notice.index({tags: 1, categories: 1});
 
 Notice.pre('save', function(next) {
     this.update = Date.now();
