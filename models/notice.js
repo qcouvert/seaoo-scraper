@@ -22,4 +22,5 @@ Notice.index({tags: 1});
 
 Notice.pre('save', function(next) {
     this.update = Date.now();
+    next();
 });
