@@ -20,7 +20,8 @@ var Notice = module.exports = new Schema({
     tags: [String]
 });
 
-Notice.index({tags: 1, categories: 1});
+Notice.index({tags: 1});
+Notice.index({categories: 1});
 
 Notice.pre('save', function(next) {
     this.update = Date.now();
