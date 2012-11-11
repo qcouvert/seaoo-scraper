@@ -21,7 +21,7 @@ var Notice = module.exports = new Schema({
 });
 
 Notice.index({tags: 1});
-//Notice.index({categories: 1});
+Notice.index({categories: 1});
 
 Notice.pre('save', function(next) {
     this.update = Date.now();
