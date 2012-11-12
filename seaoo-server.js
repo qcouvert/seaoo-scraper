@@ -15,7 +15,18 @@ router.get('/notice/<uuid:itemid>', function (req, res) {
   });
 });
 router.get('/notice', function(req, res) {
-  if (typeof req.query.category !== 'undefined') {
+  if (typeof req.query.number !== 'undefined') {
+    seao.searchNotices(req.query.number, req.query.buyer || null, req.query.buyerType || null, function(error, notices) {
+      if (!error) {
+        res.write(JSON.stringify(notices));
+      }
+      else {
+        res.write(JSON.stringify({error: error}));
+      }
+      res.end();
+    })
+  }
+  else if (typeof req.query.category !== 'undefined') {
    seao.getNoticesByCategory(req.query.category, 1, 100, function(error, notices) {
      if (!error) {
        res.write(JSON.stringify(notices));
