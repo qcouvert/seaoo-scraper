@@ -1720,7 +1720,7 @@ class PDFDocument(object):
             adeptout = adeptout + 'Mac OS X is not supported, yet.'
             adeptout = adeptout + 'Read the blogs FAQs for more information'
             self.osuseragent = 'Mac OS X'
-            self.get_macaddress = self.get_linux_macaddress            
+            self.get_macaddress = self.get_osx_macaddress
             self.fo_sethwids = self.fo_linux_sethwids            
             #raise ADEPTError(adeptout)            
         # add static arguments for http/https request
@@ -2188,6 +2188,11 @@ class PDFDocument(object):
         self.fileopen['FowpKbd']='Yes'
         self.fileopen['RequestSchema']='Default'
         
+
+    def get_osx_macaddress(self):
+        return '00:00:00:00:00:00'.replace(':', '')
+
+
     # get nic mac address
     def get_linux_macaddress(self):
         try:
