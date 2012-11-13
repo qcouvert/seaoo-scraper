@@ -125,9 +125,9 @@ import hashlib
 from itertools import chain, islice
 import xml.etree.ElementTree as etree
 #import Tkinter
-import Tkconstants
-import tkFileDialog
-import tkMessageBox
+#import Tkconstants
+#import tkFileDialog
+#import tkMessageBox
 # added for fileopen support
 import urllib
 import urlparse
@@ -3070,26 +3070,28 @@ class DecryptionDialog(Tkinter.Frame):
          
 
     def get_keypath(self):
-        keypath = tkFileDialog.askopenfilename(
-            parent=None, title='Select ADEPT key file',
-            defaultextension='.der', filetypes=[('DER-encoded files', '.der'),
-                                                ('All Files', '.*')])
-        if keypath:
-            keypath = os.path.normpath(os.path.realpath(keypath))
-            self.keypath.delete(0, Tkconstants.END)
-            self.keypath.insert(0, keypath)
-        return
+        pass
+        #keypath = tkFileDialog.askopenfilename(
+        #    parent=None, title='Select ADEPT key file',
+        #    defaultextension='.der', filetypes=[('DER-encoded files', '.der'),
+        #                                        ('All Files', '.*')])
+        #if keypath:
+        #    keypath = os.path.normpath(os.path.realpath(keypath))
+        #    self.keypath.delete(0, Tkconstants.END)
+        #    self.keypath.insert(0, keypath)
+        #return
 
     def get_inpath(self):
-        inpath = tkFileDialog.askopenfilename(
-            parent=None, title='Select ADEPT or FileOpen-encrypted PDF file to decrypt',
-            defaultextension='.pdf', filetypes=[('PDF files', '.pdf'),
-                                                 ('All files', '.*')])
-        if inpath:
-            inpath = os.path.normpath(os.path.realpath(inpath))
-            self.inpath.delete(0, Tkconstants.END)
-            self.inpath.insert(0, inpath)
-        return
+        pass
+        #inpath = tkFileDialog.askopenfilename(
+        #    parent=None, title='Select ADEPT or FileOpen-encrypted PDF file to decrypt',
+        #    defaultextension='.pdf', filetypes=[('PDF files', '.pdf'),
+        #                                         ('All files', '.*')])
+        #if inpath:
+        #    inpath = os.path.normpath(os.path.realpath(inpath))
+        #    self.inpath.delete(0, Tkconstants.END)
+        #    self.inpath.insert(0, inpath)
+        #return
 
     def debug_toggle(self):
         global DEBUG_MODE
@@ -3099,15 +3101,16 @@ class DecryptionDialog(Tkinter.Frame):
             DEBUG_MODE = False
             
     def get_outpath(self):
-        outpath = tkFileDialog.asksaveasfilename(
-            parent=None, title='Select unencrypted PDF file to produce',
-            defaultextension='.pdf', filetypes=[('PDF files', '.pdf'),
-                                                 ('All files', '.*')])
-        if outpath:
-            outpath = os.path.normpath(os.path.realpath(outpath))
-            self.outpath.delete(0, Tkconstants.END)
-            self.outpath.insert(0, outpath)
-        return
+        pass
+        #outpath = tkFileDialog.asksaveasfilename(
+        #    parent=None, title='Select unencrypted PDF file to produce',
+        #    defaultextension='.pdf', filetypes=[('PDF files', '.pdf'),
+        #                                         ('All files', '.*')])
+        #if outpath:
+        #    outpath = os.path.normpath(os.path.realpath(outpath))
+        #    self.outpath.delete(0, Tkconstants.END)
+        #    self.outpath.insert(0, outpath)
+        #return
 
     def decrypt(self):
         global INPUTFILEPATH
