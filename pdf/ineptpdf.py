@@ -124,7 +124,7 @@ import struct
 import hashlib
 from itertools import chain, islice
 import xml.etree.ElementTree as etree
-import Tkinter
+#import Tkinter
 import Tkconstants
 import tkFileDialog
 import tkMessageBox
@@ -1841,20 +1841,21 @@ class PDFDocument(object):
                     self.gui = False
                 # fallback
                 else:
-                    self.pwtk = Tkinter.Tk()
-                    self.pwtk.title('Ineptpdf8')
-                    self.pwtk.minsize(150, 0)
-                    infotxt1 = 'Get the session cookie key manually (Firefox step-by-step:\n'+\
-                               'Start Firefox -> Tools -> Options -> Privacy -> Show Cookies\n'+\
-                               '-> Search for a cookie from ' + self.surl +' with the\n'+\
-                               'name ' + self.cses +' and copy paste the content field in the\n'+\
-                               'Session Content field. Remove possible spaces or new lines at the '+\
-                               'end\n (cursor must be blinking right behind the last character)'
-                    self.label0 = Tkinter.Label(self.pwtk, text=infotxt1)
-                    self.label0.pack()
-                    self.label1 = Tkinter.Label(self.pwtk, text="Session Content")
-                    self.pwfieldreq = 0
-                    self.gui = True
+                    #self.pwtk = Tkinter.Tk()
+                    #self.pwtk.title('Ineptpdf8')
+                    #self.pwtk.minsize(150, 0)
+                    #infotxt1 = 'Get the session cookie key manually (Firefox step-by-step:\n'+\
+                    #           'Start Firefox -> Tools -> Options -> Privacy -> Show Cookies\n'+\
+                    #           '-> Search for a cookie from ' + self.surl +' with the\n'+\
+                    #           'name ' + self.cses +' and copy paste the content field in the\n'+\
+                    #           'Session Content field. Remove possible spaces or new lines at the '+\
+                    #           'end\n (cursor must be blinking right behind the last character)'
+                    #self.label0 = Tkinter.Label(self.pwtk, text=infotxt1)
+                    #self.label0.pack()
+                    #self.label1 = Tkinter.Label(self.pwtk, text="Session Content")
+                    #self.pwfieldreq = 0
+                    #self.gui = True
+                    pass
             # user cookie processing                                     
             elif self.fileopen['SEMO'] == '2':
                 cookies = self.BrowserCookie()
@@ -1868,19 +1869,20 @@ class PDFDocument(object):
                     self.gui = False
                 # fallback
                 else:
-                    self.pwtk = Tkinter.Tk()
-                    self.pwtk.title('Ineptpdf8')
-                    self.pwtk.minsize(150, 0)
-                    self.label1 = Tkinter.Label(self.pwtk, text="Username")
-                    infotxt1 = 'Get the user cookie keys manually (Firefox step-by-step:\n'+\
-                               'Start Firefox -> Tools -> Options -> Privacy -> Show Cookies\n'+\
-                               '-> Search for cookies from ' + self.surl +' with the\n'+\
-                               'name name in the user field and copy paste the content field in the\n'+\
-                               'username field. Do the same with the name pass in the password field).'
-                    self.label0 = Tkinter.Label(self.pwtk, text=infotxt1)
-                    self.label0.pack()                                       
-                    self.pwfieldreq = 1
-                    self.gui = True
+                    pass
+                    #self.pwtk = Tkinter.Tk()
+                    #self.pwtk.title('Ineptpdf8')
+                    #self.pwtk.minsize(150, 0)
+                    #self.label1 = Tkinter.Label(self.pwtk, text="Username")
+                    #infotxt1 = 'Get the user cookie keys manually (Firefox step-by-step:\n'+\
+                    #           'Start Firefox -> Tools -> Options -> Privacy -> Show Cookies\n'+\
+                    #           '-> Search for cookies from ' + self.surl +' with the\n'+\
+                    #           'name name in the user field and copy paste the content field in the\n'+\
+                    #           'username field. Do the same with the name pass in the password field).'
+                    #self.label0 = Tkinter.Label(self.pwtk, text=infotxt1)
+                    #self.label0.pack()                                       
+                    #self.pwfieldreq = 1
+                    #self.gui = True
 ##            else:
 ##                self.pwtk = Tkinter.Tk()
 ##                self.pwtk.title('Ineptpdf8')
@@ -1890,23 +1892,24 @@ class PDFDocument(object):
 ##                self.pwfieldreq = 1
 ##                self.gui = True
             if self.gui == True:
-                self.un_entry = Tkinter.Entry(self.pwtk)
-                # cursor here
-                self.un_entry.focus()
-                self.label2 = Tkinter.Label(self.pwtk, text="Password")
-                self.pw_entry = Tkinter.Entry(self.pwtk, show="*")
-                self.button = Tkinter.Button(self.pwtk, text='Go for it!', command=self.fo_save_values)
-                # widget layout, stack vertical
-                self.label1.pack()
-                self.un_entry.pack()
-                # create a password label and field
-                if self.pwfieldreq == 1:
-                    self.label2.pack()
-                    self.pw_entry.pack()
-                self.button.pack()
-                self.pwtk.update()            
-                # start the event loop
-                self.pwtk.mainloop()
+                pass
+                #self.un_entry = Tkinter.Entry(self.pwtk)
+                ## cursor here
+                #self.un_entry.focus()
+                #self.label2 = Tkinter.Label(self.pwtk, text="Password")
+                #self.pw_entry = Tkinter.Entry(self.pwtk, show="*")
+                #self.button = Tkinter.Button(self.pwtk, text='Go for it!', command=self.fo_save_values)
+                ## widget layout, stack vertical
+                #self.label1.pack()
+                #self.un_entry.pack()
+                ## create a password label and field
+                #if self.pwfieldreq == 1:
+                #    self.label2.pack()
+                #    self.pw_entry.pack()
+                #self.button.pack()
+                #self.pwtk.update()            
+                ## start the event loop
+                #self.pwtk.mainloop()
           
         # original request
         # drive through tupple for building the permission url
@@ -2043,33 +2046,34 @@ class PDFDocument(object):
     
     def gen_pw_dialog(self, Username='Username', Password='Password', Title='User/Password Authentication',\
                       OK='Proceed', Text1='Authorization', Text2='Enter Required Data'):
-        self.pwtk = Tkinter.Tk()
-        self.pwtk.title(Title)
-        self.pwtk.minsize(150, 0)
-        self.label1 = Tkinter.Label(self.pwtk, text=Text1)
-        self.label2 = Tkinter.Label(self.pwtk, text=Text2)
-        self.label3 = Tkinter.Label(self.pwtk, text=Username)
-        self.pwfieldreq = 1        
-        self.gui = True
-        self.un_entry = Tkinter.Entry(self.pwtk)
-        # cursor here
-        self.un_entry.focus()
-        self.label4 = Tkinter.Label(self.pwtk, text=Password)
-        self.pw_entry = Tkinter.Entry(self.pwtk, show="*")
-        self.button = Tkinter.Button(self.pwtk, text=OK, command=self.fo_save_values)
-        # widget layout, stack vertical
-        self.label1.pack()
-        self.label2.pack()
-        self.label3.pack()        
-        self.un_entry.pack()
-        # create a password label and field
-        if self.pwfieldreq == 1:
-            self.label4.pack()
-            self.pw_entry.pack()
-        self.button.pack()
-        self.pwtk.update()            
-        # start the event loop
-        self.pwtk.mainloop()
+        #self.pwtk = Tkinter.Tk()
+        #self.pwtk.title(Title)
+        #self.pwtk.minsize(150, 0)
+        #self.label1 = Tkinter.Label(self.pwtk, text=Text1)
+        #self.label2 = Tkinter.Label(self.pwtk, text=Text2)
+        #self.label3 = Tkinter.Label(self.pwtk, text=Username)
+        #self.pwfieldreq = 1        
+        #self.gui = True
+        #self.un_entry = Tkinter.Entry(self.pwtk)
+        ## cursor here
+        #self.un_entry.focus()
+        #self.label4 = Tkinter.Label(self.pwtk, text=Password)
+        #self.pw_entry = Tkinter.Entry(self.pwtk, show="*")
+        #self.button = Tkinter.Button(self.pwtk, text=OK, command=self.fo_save_values)
+        ## widget layout, stack vertical
+        #self.label1.pack()
+        #self.label2.pack()
+        #self.label3.pack()        
+        #self.un_entry.pack()
+        ## create a password label and field
+        #if self.pwfieldreq == 1:
+        #    self.label4.pack()
+        #    self.pw_entry.pack()
+        #self.button.pack()
+        #self.pwtk.update()            
+        ## start the event loop
+        #self.pwtk.mainloop()
+        pass
         
     # genkey functions
     def genkey_v2(self, objid, genno):
@@ -3021,47 +3025,48 @@ def cli_main(argv=sys.argv):
 
 class DecryptionDialog(Tkinter.Frame):
     def __init__(self, root):
+        pass
         # debug mode debugging
-        global DEBUG_MODE
-        Tkinter.Frame.__init__(self, root, border=5)
-        ltext='Select file for decryption\n(Ignore Password / Key file option for Fileopen/APS PDFs)'        
-        self.status = Tkinter.Label(self, text=ltext)
-        self.status.pack(fill=Tkconstants.X, expand=1)
-        body = Tkinter.Frame(self)
-        body.pack(fill=Tkconstants.X, expand=1)
-        sticky = Tkconstants.E + Tkconstants.W
-        body.grid_columnconfigure(1, weight=2)
-        Tkinter.Label(body, text='Password\nor Key file').grid(row=0)
-        self.keypath = Tkinter.Entry(body, width=30)
-        self.keypath.grid(row=0, column=1, sticky=sticky)
-        if os.path.exists('adeptkey.der'):
-            self.keypath.insert(0, 'adeptkey.der')
-        button = Tkinter.Button(body, text="...", command=self.get_keypath)
-        button.grid(row=0, column=2)
-        Tkinter.Label(body, text='Input file').grid(row=1)
-        self.inpath = Tkinter.Entry(body, width=30)
-        self.inpath.grid(row=1, column=1, sticky=sticky)
-        button = Tkinter.Button(body, text="...", command=self.get_inpath)
-        button.grid(row=1, column=2)
-        Tkinter.Label(body, text='Output file').grid(row=2)
-        self.outpath = Tkinter.Entry(body, width=30)
-        self.outpath.grid(row=2, column=1, sticky=sticky)
-        debugmode = Tkinter.Checkbutton(self, text = "Debug Mode (writable directory required)", command=self.debug_toggle, height=2, \
-                 width = 40)             
-        debugmode.pack()         
-        button = Tkinter.Button(body, text="...", command=self.get_outpath)
-        button.grid(row=2, column=2)
-        buttons = Tkinter.Frame(self)
-        buttons.pack()
+        #global DEBUG_MODE
+        #Tkinter.Frame.__init__(self, root, border=5)
+        #ltext='Select file for decryption\n(Ignore Password / Key file option for Fileopen/APS PDFs)'        
+        #self.status = Tkinter.Label(self, text=ltext)
+        #self.status.pack(fill=Tkconstants.X, expand=1)
+        #body = Tkinter.Frame(self)
+        #body.pack(fill=Tkconstants.X, expand=1)
+        #sticky = Tkconstants.E + Tkconstants.W
+        #body.grid_columnconfigure(1, weight=2)
+        #Tkinter.Label(body, text='Password\nor Key file').grid(row=0)
+        #self.keypath = Tkinter.Entry(body, width=30)
+        #self.keypath.grid(row=0, column=1, sticky=sticky)
+        #if os.path.exists('adeptkey.der'):
+        #    self.keypath.insert(0, 'adeptkey.der')
+        #button = Tkinter.Button(body, text="...", command=self.get_keypath)
+        #button.grid(row=0, column=2)
+        #Tkinter.Label(body, text='Input file').grid(row=1)
+        #self.inpath = Tkinter.Entry(body, width=30)
+        #self.inpath.grid(row=1, column=1, sticky=sticky)
+        #button = Tkinter.Button(body, text="...", command=self.get_inpath)
+        #button.grid(row=1, column=2)
+        #Tkinter.Label(body, text='Output file').grid(row=2)
+        #self.outpath = Tkinter.Entry(body, width=30)
+        #self.outpath.grid(row=2, column=1, sticky=sticky)
+        #debugmode = Tkinter.Checkbutton(self, text = "Debug Mode (writable directory required)", command=self.debug_toggle, height=2, \
+        #         width = 40)             
+        #debugmode.pack()         
+        #button = Tkinter.Button(body, text="...", command=self.get_outpath)
+        #button.grid(row=2, column=2)
+        #buttons = Tkinter.Frame(self)
+        #buttons.pack()
   
 
-        botton = Tkinter.Button(
-            buttons, text="Decrypt", width=10, command=self.decrypt)
-        botton.pack(side=Tkconstants.LEFT)
-        Tkinter.Frame(buttons, width=10).pack(side=Tkconstants.LEFT)
-        button = Tkinter.Button(
-            buttons, text="Quit", width=10, command=self.quit)
-        button.pack(side=Tkconstants.RIGHT)
+        #botton = Tkinter.Button(
+        #    buttons, text="Decrypt", width=10, command=self.decrypt)
+        #botton.pack(side=Tkconstants.LEFT)
+        #Tkinter.Frame(buttons, width=10).pack(side=Tkconstants.LEFT)
+        #button = Tkinter.Button(
+        #    buttons, text="Quit", width=10, command=self.quit)
+        #button.pack(side=Tkconstants.RIGHT)
          
 
     def get_keypath(self):
@@ -3138,23 +3143,23 @@ class DecryptionDialog(Tkinter.Frame):
         return
 
 def gui_main():
-    root = Tkinter.Tk()
-    if RSA is None:
-        root.withdraw()
-        tkMessageBox.showerror(
-            "INEPT PDF and FileOpen Decrypter",
-            "This script requires PyCrypto, which must be installed "
-            "separately.  Read the top-of-script comment for details.")
-        return 1
-    root.title('INEPT PDF Decrypter 8.4.51 (FileOpen/APS-Support)')
-    root.resizable(True, False)
-    root.minsize(370, 0)
-    DecryptionDialog(root).pack(fill=Tkconstants.X, expand=1)
-    root.mainloop()
-    return 0
+    pass
+    #root = Tkinter.Tk()
+    #if RSA is None:
+    #    root.withdraw()
+    #    tkMessageBox.showerror(
+    #        "INEPT PDF and FileOpen Decrypter",
+    #        "This script requires PyCrypto, which must be installed "
+    #        "separately.  Read the top-of-script comment for details.")
+    #    return 1
+    #root.title('INEPT PDF Decrypter 8.4.51 (FileOpen/APS-Support)')
+    #root.resizable(True, False)
+    #root.minsize(370, 0)
+    #DecryptionDialog(root).pack(fill=Tkconstants.X, expand=1)
+    #root.mainloop()
+    #return 0
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         sys.exit(cli_main())
-    sys.exit(gui_main())
