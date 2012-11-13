@@ -142,7 +142,7 @@ from ctypes import *
 import traceback
 import inspect
 import tempfile
-import sqlite3
+#import sqlite3
 import httplib
 try:
     from Crypto.Cipher import ARC4
@@ -2571,45 +2571,46 @@ class WinBrowserCookie():
     def __init__(self):
         pass
     def getcookie(self, cname, chost):
-        # check firefox db
-        fprofile =  os.environ['AppData']+r'\Mozilla\Firefox'
-        pinifile = 'profiles.ini'
-        fini = os.path.normpath(fprofile + '\\' + pinifile)
-        try:
-            with open(fini,'r') as ffini:
-                firefoxini =  ffini.read()
-        # Firefox not installed or on an USB stick
-        except:
-            return None
-        for pair in firefoxini.split('\n'):
-            try:
-                key, value = pair.split('=',1)
-                if key == 'Path':
-                    fprofile = os.path.normpath(fprofile+'//'+value+'//'+'cookies.sqlite')
-                    break
-            # asdf
-            except:
-                continue
-        if os.path.isfile(fprofile):
-            try:
-                con = sqlite3.connect(fprofile,1)
-            except:
-                raise ADEPTError('Firefox Cookie data base locked. Close Firefox and try again')
-            cur = con.cursor()
-            try:            
-                cur.execute("select value from moz_cookies where name=? and host=?", (cname, chost))
-            except Exception:
-                raise ADEPTError('Firefox Cookie database is locked. Close Firefox and try again')
-            try:
-                return cur.fetchone()[0]
-            except Exception:
-                # sometimes is a dot in front of the host
-                chost = '.'+chost
-                cur.execute("select value from moz_cookies where name=? and host=?", (cname, chost))
-                try:
-                    return cur.fetchone()[0]
-                except:
-                    return None
+        pass
+        ## check firefox db
+        #fprofile =  os.environ['AppData']+r'\Mozilla\Firefox'
+        #pinifile = 'profiles.ini'
+        #fini = os.path.normpath(fprofile + '\\' + pinifile)
+        #try:
+        #    with open(fini,'r') as ffini:
+        #        firefoxini =  ffini.read()
+        ## Firefox not installed or on an USB stick
+        #except:
+        #    return None
+        #for pair in firefoxini.split('\n'):
+        #    try:
+        #        key, value = pair.split('=',1)
+        #        if key == 'Path':
+        #            fprofile = os.path.normpath(fprofile+'//'+value+'//'+'cookies.sqlite')
+        #            break
+        #    # asdf
+        #    except:
+        #        continue
+        #if os.path.isfile(fprofile):
+        #    try:
+        #        con = sqlite3.connect(fprofile,1)
+        #    except:
+        #        raise ADEPTError('Firefox Cookie data base locked. Close Firefox and try again')
+        #    cur = con.cursor()
+        #    try:            
+        #        cur.execute("select value from moz_cookies where name=? and host=?", (cname, chost))
+        #    except Exception:
+        #        raise ADEPTError('Firefox Cookie database is locked. Close Firefox and try again')
+        #    try:
+        #        return cur.fetchone()[0]
+        #    except Exception:
+        #        # sometimes is a dot in front of the host
+        #        chost = '.'+chost
+        #        cur.execute("select value from moz_cookies where name=? and host=?", (cname, chost))
+        #        try:
+        #            return cur.fetchone()[0]
+        #        except:
+        #            return None
                 
 class PDFObjStmRef(object):
     maxindex = 0
