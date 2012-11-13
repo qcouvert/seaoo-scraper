@@ -1707,7 +1707,7 @@ class PDFDocument(object):
             self.BrowserCookie = WinBrowserCookie
         elif sysplatform=='linux2':
             adeptout = 'Linux is not supported, yet.\n'
-            raise ADEPTError(adeptout)
+            #raise ADEPTError(adeptout)
             self.osuseragent = 'Linux i686'
             self.get_macaddress = self.get_linux_macaddress            
             self.fo_sethwids = self.fo_linux_sethwids            
@@ -3023,127 +3023,127 @@ def cli_main(argv=sys.argv):
     return 0
 
 
-class DecryptionDialog(Tkinter.Frame):
-    def __init__(self, root):
-        pass
-        # debug mode debugging
-        #global DEBUG_MODE
-        #Tkinter.Frame.__init__(self, root, border=5)
-        #ltext='Select file for decryption\n(Ignore Password / Key file option for Fileopen/APS PDFs)'        
-        #self.status = Tkinter.Label(self, text=ltext)
-        #self.status.pack(fill=Tkconstants.X, expand=1)
-        #body = Tkinter.Frame(self)
-        #body.pack(fill=Tkconstants.X, expand=1)
-        #sticky = Tkconstants.E + Tkconstants.W
-        #body.grid_columnconfigure(1, weight=2)
-        #Tkinter.Label(body, text='Password\nor Key file').grid(row=0)
-        #self.keypath = Tkinter.Entry(body, width=30)
-        #self.keypath.grid(row=0, column=1, sticky=sticky)
-        #if os.path.exists('adeptkey.der'):
-        #    self.keypath.insert(0, 'adeptkey.der')
-        #button = Tkinter.Button(body, text="...", command=self.get_keypath)
-        #button.grid(row=0, column=2)
-        #Tkinter.Label(body, text='Input file').grid(row=1)
-        #self.inpath = Tkinter.Entry(body, width=30)
-        #self.inpath.grid(row=1, column=1, sticky=sticky)
-        #button = Tkinter.Button(body, text="...", command=self.get_inpath)
-        #button.grid(row=1, column=2)
-        #Tkinter.Label(body, text='Output file').grid(row=2)
-        #self.outpath = Tkinter.Entry(body, width=30)
-        #self.outpath.grid(row=2, column=1, sticky=sticky)
-        #debugmode = Tkinter.Checkbutton(self, text = "Debug Mode (writable directory required)", command=self.debug_toggle, height=2, \
-        #         width = 40)             
-        #debugmode.pack()         
-        #button = Tkinter.Button(body, text="...", command=self.get_outpath)
-        #button.grid(row=2, column=2)
-        #buttons = Tkinter.Frame(self)
-        #buttons.pack()
-  
-
-        #botton = Tkinter.Button(
-        #    buttons, text="Decrypt", width=10, command=self.decrypt)
-        #botton.pack(side=Tkconstants.LEFT)
-        #Tkinter.Frame(buttons, width=10).pack(side=Tkconstants.LEFT)
-        #button = Tkinter.Button(
-        #    buttons, text="Quit", width=10, command=self.quit)
-        #button.pack(side=Tkconstants.RIGHT)
-         
-
-    def get_keypath(self):
-        pass
-        #keypath = tkFileDialog.askopenfilename(
-        #    parent=None, title='Select ADEPT key file',
-        #    defaultextension='.der', filetypes=[('DER-encoded files', '.der'),
-        #                                        ('All Files', '.*')])
-        #if keypath:
-        #    keypath = os.path.normpath(os.path.realpath(keypath))
-        #    self.keypath.delete(0, Tkconstants.END)
-        #    self.keypath.insert(0, keypath)
-        #return
-
-    def get_inpath(self):
-        pass
-        #inpath = tkFileDialog.askopenfilename(
-        #    parent=None, title='Select ADEPT or FileOpen-encrypted PDF file to decrypt',
-        #    defaultextension='.pdf', filetypes=[('PDF files', '.pdf'),
-        #                                         ('All files', '.*')])
-        #if inpath:
-        #    inpath = os.path.normpath(os.path.realpath(inpath))
-        #    self.inpath.delete(0, Tkconstants.END)
-        #    self.inpath.insert(0, inpath)
-        #return
-
-    def debug_toggle(self):
-        global DEBUG_MODE
-        if DEBUG_MODE == False:
-            DEBUG_MODE = True
-        else:
-            DEBUG_MODE = False
-            
-    def get_outpath(self):
-        pass
-        #outpath = tkFileDialog.asksaveasfilename(
-        #    parent=None, title='Select unencrypted PDF file to produce',
-        #    defaultextension='.pdf', filetypes=[('PDF files', '.pdf'),
-        #                                         ('All files', '.*')])
-        #if outpath:
-        #    outpath = os.path.normpath(os.path.realpath(outpath))
-        #    self.outpath.delete(0, Tkconstants.END)
-        #    self.outpath.insert(0, outpath)
-        #return
-
-    def decrypt(self):
-        global INPUTFILEPATH
-        global KEYFILEPATH
-        global PASSWORD
-        keypath = self.keypath.get()
-        inpath = self.inpath.get()
-        outpath = self.outpath.get()
-        if not keypath or not os.path.exists(keypath):
-            # keyfile doesn't exist
-            KEYFILEPATH = False
-            PASSWORD = keypath            
-        if not inpath or not os.path.exists(inpath):
-            self.status['text'] = 'Specified input file does not exist'
-            return
-        if not outpath:
-            self.status['text'] = 'Output file not specified'
-            return
-        if inpath == outpath:
-            self.status['text'] = 'Must have different input and output files'
-            return
-        # patch for non-ascii characters
-        INPUTFILEPATH = inpath.encode('utf-8')
-        argv = [sys.argv[0], keypath, inpath, outpath]
-        self.status['text'] = 'Processing ...'
-        try:
-            cli_main(argv)
-        except Exception, a:
-            self.status['text'] = 'Error: ' + str(a)
-            return
-        self.status['text'] = 'File successfully decrypted.\n'+\
-                              'Close this window or decrypt another pdf file.'
-        return
+#class DecryptionDialog(Tkinter.Frame):
+#    def __init__(self, root):
+#        pass
+#        # debug mode debugging
+#        #global DEBUG_MODE
+#        #Tkinter.Frame.__init__(self, root, border=5)
+#        #ltext='Select file for decryption\n(Ignore Password / Key file option for Fileopen/APS PDFs)'        
+#        #self.status = Tkinter.Label(self, text=ltext)
+#        #self.status.pack(fill=Tkconstants.X, expand=1)
+#        #body = Tkinter.Frame(self)
+#        #body.pack(fill=Tkconstants.X, expand=1)
+#        #sticky = Tkconstants.E + Tkconstants.W
+#        #body.grid_columnconfigure(1, weight=2)
+#        #Tkinter.Label(body, text='Password\nor Key file').grid(row=0)
+#        #self.keypath = Tkinter.Entry(body, width=30)
+#        #self.keypath.grid(row=0, column=1, sticky=sticky)
+#        #if os.path.exists('adeptkey.der'):
+#        #    self.keypath.insert(0, 'adeptkey.der')
+#        #button = Tkinter.Button(body, text="...", command=self.get_keypath)
+#        #button.grid(row=0, column=2)
+#        #Tkinter.Label(body, text='Input file').grid(row=1)
+#        #self.inpath = Tkinter.Entry(body, width=30)
+#        #self.inpath.grid(row=1, column=1, sticky=sticky)
+#        #button = Tkinter.Button(body, text="...", command=self.get_inpath)
+#        #button.grid(row=1, column=2)
+#        #Tkinter.Label(body, text='Output file').grid(row=2)
+#        #self.outpath = Tkinter.Entry(body, width=30)
+#        #self.outpath.grid(row=2, column=1, sticky=sticky)
+#        #debugmode = Tkinter.Checkbutton(self, text = "Debug Mode (writable directory required)", command=self.debug_toggle, height=2, \
+#        #         width = 40)             
+#        #debugmode.pack()         
+#        #button = Tkinter.Button(body, text="...", command=self.get_outpath)
+#        #button.grid(row=2, column=2)
+#        #buttons = Tkinter.Frame(self)
+#        #buttons.pack()
+#  
+#
+#        #botton = Tkinter.Button(
+#        #    buttons, text="Decrypt", width=10, command=self.decrypt)
+#        #botton.pack(side=Tkconstants.LEFT)
+#        #Tkinter.Frame(buttons, width=10).pack(side=Tkconstants.LEFT)
+#        #button = Tkinter.Button(
+#        #    buttons, text="Quit", width=10, command=self.quit)
+#        #button.pack(side=Tkconstants.RIGHT)
+#         
+#
+#    def get_keypath(self):
+#        pass
+#        #keypath = tkFileDialog.askopenfilename(
+#        #    parent=None, title='Select ADEPT key file',
+#        #    defaultextension='.der', filetypes=[('DER-encoded files', '.der'),
+#        #                                        ('All Files', '.*')])
+#        #if keypath:
+#        #    keypath = os.path.normpath(os.path.realpath(keypath))
+#        #    self.keypath.delete(0, Tkconstants.END)
+#        #    self.keypath.insert(0, keypath)
+#        #return
+#
+#    def get_inpath(self):
+#        pass
+#        #inpath = tkFileDialog.askopenfilename(
+#        #    parent=None, title='Select ADEPT or FileOpen-encrypted PDF file to decrypt',
+#        #    defaultextension='.pdf', filetypes=[('PDF files', '.pdf'),
+#        #                                         ('All files', '.*')])
+#        #if inpath:
+#        #    inpath = os.path.normpath(os.path.realpath(inpath))
+#        #    self.inpath.delete(0, Tkconstants.END)
+#        #    self.inpath.insert(0, inpath)
+#        #return
+#
+#    def debug_toggle(self):
+#        global DEBUG_MODE
+#        if DEBUG_MODE == False:
+#            DEBUG_MODE = True
+#        else:
+#            DEBUG_MODE = False
+#            
+#    def get_outpath(self):
+#        pass
+#        #outpath = tkFileDialog.asksaveasfilename(
+#        #    parent=None, title='Select unencrypted PDF file to produce',
+#        #    defaultextension='.pdf', filetypes=[('PDF files', '.pdf'),
+#        #                                         ('All files', '.*')])
+#        #if outpath:
+#        #    outpath = os.path.normpath(os.path.realpath(outpath))
+#        #    self.outpath.delete(0, Tkconstants.END)
+#        #    self.outpath.insert(0, outpath)
+#        #return
+#
+#    def decrypt(self):
+#        global INPUTFILEPATH
+#        global KEYFILEPATH
+#        global PASSWORD
+#        keypath = self.keypath.get()
+#        inpath = self.inpath.get()
+#        outpath = self.outpath.get()
+#        if not keypath or not os.path.exists(keypath):
+#            # keyfile doesn't exist
+#            KEYFILEPATH = False
+#            PASSWORD = keypath            
+#        if not inpath or not os.path.exists(inpath):
+#            self.status['text'] = 'Specified input file does not exist'
+#            return
+#        if not outpath:
+#            self.status['text'] = 'Output file not specified'
+#            return
+#        if inpath == outpath:
+#            self.status['text'] = 'Must have different input and output files'
+#            return
+#        # patch for non-ascii characters
+#        INPUTFILEPATH = inpath.encode('utf-8')
+#        argv = [sys.argv[0], keypath, inpath, outpath]
+#        self.status['text'] = 'Processing ...'
+#        try:
+#            cli_main(argv)
+#        except Exception, a:
+#            self.status['text'] = 'Error: ' + str(a)
+#            return
+#        self.status['text'] = 'File successfully decrypted.\n'+\
+#                              'Close this window or decrypt another pdf file.'
+#        return
 
 def gui_main():
     pass
