@@ -11,6 +11,8 @@ var Notice = module.exports = new Schema({
     Title: String,
     Status: String,
     description: String,
+    publication: Date,
+    closing: Date,
     information: {
         PublicationDate: String
     },

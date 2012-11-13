@@ -1,4 +1,9 @@
 
+// timezone
+var timezonejs = require('timezone-js');
+var _tz = timezonejs.timezone;
+_tz.loadingScheme = _tz.loadingSchemes.MANUAL_LOAD;
+_tz.loadZoneDataFromObject(require('./timezone.json'));
 
 // Database
 var mongoose = require('mongoose');

@@ -6,5 +6,6 @@ var ObjectId = Schema.Types.ObjectId;
 module.exports = new Schema({
     name: String,
     slug: {type: String, index:true},
-    update: {type: Date, index:true}
+    update: {type: Date, index:true},
+    scraping: {type: Boolean, default:false}
 });
