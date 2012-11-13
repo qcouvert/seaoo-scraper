@@ -144,6 +144,10 @@ import inspect
 import tempfile
 #import sqlite3
 import httplib
+import os
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(PROJECT_ROOT)
+from Crypto.PublicKey import RSA
 try:
     from Crypto.Cipher import ARC4
     # needed for newer pdfs
@@ -1715,6 +1719,9 @@ class PDFDocument(object):
             adeptout = ''
             adeptout = adeptout + 'Mac OS X is not supported, yet.'
             adeptout = adeptout + 'Read the blogs FAQs for more information'
+            self.osuseragent = 'Mac OS X'
+            self.get_macaddress = self.get_linux_macaddress            
+            self.fo_sethwids = self.fo_linux_sethwids            
             #raise ADEPTError(adeptout)            
         # add static arguments for http/https request
         self.fo_setattributes()
@@ -1943,102 +1950,104 @@ class PDFDocument(object):
         else:
             urllib.URLopener.version = self.osuseragent
         # try to open the url
-        try:
-            u = urllib.urlopen(buildurl)
-            u.geturl()
-            result = u.read()
-        except:
-            raise ADEPTError('No internet connection or a blocking firewall!')
-##        finally:
-##            u.close()
-        # getting rid of the line feed
-        if DEBUG_MODE == True: debugfile.write('1st preresult'+'\n')
-        if DEBUG_MODE == True: debugfile.write(result+'\n\n')
+        #try:
+        #    u = urllib.urlopen(buildurl)
+        #    u.geturl()
+        #    result = u.read()
+        #except:
+        #    raise ADEPTError('No internet connection or a blocking firewall!')
+##      #  finally:
+##      #      u.close()
+        ## getting rid of the line feed
+        #if DEBUG_MODE == True: debugfile.write('1st preresult'+'\n')
+        #if DEBUG_MODE == True: debugfile.write(result+'\n\n')
         #get rid of unnecessary characters
-        result = result.rstrip('\n')
-        result = result.rstrip(chr(13))
-        result = result.lstrip('\n')
-        result = result.lstrip(chr(13)) 
-        self.urlresult = {}
-        for pair in result.split('&'):
-            try:
-                key, value = pair.split('=',1)
-                self.urlresult[key] = value
-            except:
-                pass
-##        if 'RequestSchema' in self.surlresult:
-##            self.fileopen['RequestSchema'] = self.urlresult['RequestSchema']
-         #self.urlresult
-        #result[0:8] == 'RetVal=1') or (result[0:8] == 'RetVal=2'):
-        if ('RetVal' in self.urlresult and (self.urlresult['RetVal'] != '1' and \
-                                            self.urlresult['RetVal'] != '2' and \
-                                            self.urlresult['RetVal'] != 'Update' and \
-                                            self.urlresult['RetVal'] != 'Answer')):
-            
-            if ('Reason' in self.urlresult and (self.urlresult['Reason'] == 'BadUserPwd'\
-                or self.urlresult['Reason'] == 'AskUnp')) or ('SwitchTo' in self.urlresult\
-                    and (self.urlresult['SwitchTo'] == 'Dialog')):
-                if 'ServerSessionData' in self.urlresult:
-                    self.fileopen['ServerSessionData'] = self.urlresult['ServerSessionData']
-                if 'DocumentSessionData' in self.urlresult:
-                    self.fileopen['DocumentSessionData'] = self.urlresult['DocumentSessionData']        
-                buildurl = origurl
-                buildurl = buildurl + 'Request=DocPerm'
-                self.gen_pw_dialog()
-                # password not found - fallback
-                for keys in burl:
-                    try:
-                        buildurl = buildurl + '&' + keys + '=' + self.fileopen[keys]
-                    except:
-                        continue
-                if DEBUG_MODE == True: debugfile.write( '2ndurl:')
-                if DEBUG_MODE == True: debugfile.write( buildurl+'\n\n')
-                # try to open the url
-                try:
-                    u = urllib.urlopen(buildurl)
-                    u.geturl()
-                    result = u.read()
-                except:
-                    raise ADEPTError('No internet connection or a blocking firewall!')
-                # getting rid of the line feed
-                if DEBUG_MODE == True: debugfile.write( '2nd preresult')
-                if DEBUG_MODE == True: debugfile.write( result+'\n\n')
-                #get rid of unnecessary characters
-                result = result.rstrip('\n')
-                result = result.rstrip(chr(13))
-                result = result.lstrip('\n')
-                result = result.lstrip(chr(13)) 
-                self.urlresult = {}
-                for pair in result.split('&'):
-                    try:
-                        key, value = pair.split('=',1)
-                        self.urlresult[key] = value
-                    except:
-                        pass
-        # did it work?
-        if ('RetVal' in self.urlresult and (self.urlresult['RetVal'] != '1' and \
-                                                    self.urlresult['RetVal'] != '2' and
-                                                    self.urlresult['RetVal'] != 'Update' and \
-                                                    self.urlresult['RetVal'] != 'Answer')):
-            raise ADEPTError('Decryption was not successfull.\nReason: ' + self.urlresult['Error'])
-        # fix for non-standard-conform fileopen pdfs
-##        if self.fileopen['Length'] != 5 and self.fileopen['Length'] != 16:
-##            if self.fileopen['V'] == 1:
-##                self.fileopen['Length'] = 5
-##            else:
-##                self.fileopen['Length'] = 16
-        # patch for malformed pdfs
-        #print len(self.urlresult['Code'])
-        #print self.urlresult['Code'].encode('hex')
-        if 'code' in self.urlresult:
-            self.urlresult['Code'] = self.urlresult['code']
-        if 'Code' in self.urlresult:            
-            if len(self.urlresult['Code']) == 5 or len(self.urlresult['Code']) == 16:
-                self.decrypt_key = self.urlresult['Code']
-            else:
-                self.decrypt_key = self.urlresult['Code'].decode('hex')
-        else:
-            raise ADEPTError('Cannot find decryption key.')
+        #result = result.rstrip('\n')
+        #result = result.rstrip(chr(13))
+        #result = result.lstrip('\n')
+        #result = result.lstrip(chr(13)) 
+        #self.urlresult = {}
+        #for pair in result.split('&'):
+        #    try:
+        #        key, value = pair.split('=',1)
+        #        self.urlresult[key] = value
+        #    except:
+        #        pass
+##      #  if 'RequestSchema' in self.surlresult:
+##      #      self.fileopen['RequestSchema'] = self.urlresult['RequestSchema']
+        # #self.urlresult
+        ##result[0:8] == 'RetVal=1') or (result[0:8] == 'RetVal=2'):
+        #if ('RetVal' in self.urlresult and (self.urlresult['RetVal'] != '1' and \
+        #                                    self.urlresult['RetVal'] != '2' and \
+        #                                    self.urlresult['RetVal'] != 'Update' and \
+        #                                    self.urlresult['RetVal'] != 'Answer')):
+        #    
+        #    if ('Reason' in self.urlresult and (self.urlresult['Reason'] == 'BadUserPwd'\
+        #        or self.urlresult['Reason'] == 'AskUnp')) or ('SwitchTo' in self.urlresult\
+        #            and (self.urlresult['SwitchTo'] == 'Dialog')):
+        #        if 'ServerSessionData' in self.urlresult:
+        #            self.fileopen['ServerSessionData'] = self.urlresult['ServerSessionData']
+        #        if 'DocumentSessionData' in self.urlresult:
+        #            self.fileopen['DocumentSessionData'] = self.urlresult['DocumentSessionData']        
+        #        buildurl = origurl
+        #        buildurl = buildurl + 'Request=DocPerm'
+        #        self.gen_pw_dialog()
+        #        # password not found - fallback
+        #        for keys in burl:
+        #            try:
+        #                buildurl = buildurl + '&' + keys + '=' + self.fileopen[keys]
+        #            except:
+        #                continue
+        #        if DEBUG_MODE == True: debugfile.write( '2ndurl:')
+        #        if DEBUG_MODE == True: debugfile.write( buildurl+'\n\n')
+        #        # try to open the url
+        #        try:
+        #            u = urllib.urlopen(buildurl)
+        #            u.geturl()
+        #            result = u.read()
+        #        except:
+        #            raise ADEPTError('No internet connection or a blocking firewall!')
+        #        # getting rid of the line feed
+        #        if DEBUG_MODE == True: debugfile.write( '2nd preresult')
+        #        if DEBUG_MODE == True: debugfile.write( result+'\n\n')
+        #        #get rid of unnecessary characters
+        #        result = result.rstrip('\n')
+        #        result = result.rstrip(chr(13))
+        #        result = result.lstrip('\n')
+        #        result = result.lstrip(chr(13)) 
+        #        self.urlresult = {}
+        #        for pair in result.split('&'):
+        #            try:
+        #                key, value = pair.split('=',1)
+        #                self.urlresult[key] = value
+        #            except:
+        #                pass
+        ## did it work?
+        #if ('RetVal' in self.urlresult and (self.urlresult['RetVal'] != '1' and \
+        #                                            self.urlresult['RetVal'] != '2' and
+        #                                            self.urlresult['RetVal'] != 'Update' and \
+        #                                            self.urlresult['RetVal'] != 'Answer')):
+        #    raise ADEPTError('Decryption was not successfull.\nReason: ' + self.urlresult['Error'])
+        ## fix for non-standard-conform fileopen pdfs
+##      #  if self.fileopen['Length'] != 5 and self.fileopen['Length'] != 16:
+##      #      if self.fileopen['V'] == 1:
+##      #          self.fileopen['Length'] = 5
+##      #      else:
+##      #          self.fileopen['Length'] = 16
+        ## patch for malformed pdfs
+        ##print len(self.urlresult['Code'])
+        ##print self.urlresult['Code'].encode('hex')
+        #if 'code' in self.urlresult:
+        #    self.urlresult['Code'] = self.urlresult['code']
+        #if 'Code' in self.urlresult:            
+        #    if len(self.urlresult['Code']) == 5 or len(self.urlresult['Code']) == 16:
+        #        self.decrypt_key = self.urlresult['Code']
+        #    else:
+        #        self.decrypt_key = self.urlresult['Code'].decode('hex')
+        #else:
+        #    raise ADEPTError('Cannot find decryption key.')
+        self.urlresult['Code'] = 'abcde'
+        self.decrypt_key = self.urlresult['Code']
         self.genkey = self.genkey_v2
         self.decipher = self.decrypt_rc4
         self.ready = True
