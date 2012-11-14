@@ -19,7 +19,8 @@ var Notice = module.exports = new Schema({
     categories: [String],
     creation: {type:Date, default:Date.now, index:true},
     update: {type:Date, index:true},
-    tags: [String]
+    tags: [String],
+    complete: {type:Boolean, default:false}
 });
 
 Notice.index({tags: 1});
