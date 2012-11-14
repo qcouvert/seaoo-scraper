@@ -20,7 +20,9 @@ var Notice = module.exports = new Schema({
     creation: {type:Date, default:Date.now, index:true},
     update: {type:Date, index:true},
     tags: [String],
-    complete: {type:Boolean, default:false}
+    complete: {type:Boolean, default:false},// ready to be served in results
+    toScrape: {type:Boolean, default:true}, // marked to be scraped
+    scraping: {type:Boolean, default:false} // currently being scraped
 });
 
 Notice.index({tags: 1});
